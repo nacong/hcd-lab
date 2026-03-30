@@ -322,31 +322,44 @@ export default function Home() {
             <h2 className="text-sm font-black text-khu-red uppercase tracking-[0.4em]">PUBLICATIONS</h2>
             <p className="text-3xl md:text-6xl font-black text-slate-900">연구 실적</p>
           </div>
-          <div className="space-y-12">
-            <div className="grid gap-6">
-              {intlJournals.slice(0, 5).map((paper: any, i) => (
-                <div key={i} className="flex flex-col md:flex-row bg-white border border-slate-100 p-8 rounded-[2rem] hover:shadow-xl transition-all group">
-                  <div className="md:w-16 shrink-0 text-[10px] font-black text-slate-200 group-hover:text-khu-red transition-colors">#{paper.id}</div>
-                  <div className="flex-1 space-y-4">
-                    <div className="flex gap-3"><span className="px-3 py-1 bg-khu-red/5 text-khu-red text-[10px] font-black rounded-lg border border-khu-red/10">{paper.journal}</span><span className="text-[10px] font-black text-slate-400 bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">{paper.year}</span></div>
-                    <h4 className="text-xl font-black text-slate-900 group-hover:text-khu-red transition-colors leading-tight">{paper.title}</h4>
-                    <p className="text-[12px] font-bold text-slate-500">
-                      {paper.authors.split(', ').map((auth: string, j: number, arr: string[]) => (
-                        <React.Fragment key={j}>
-                          <span className={auth.includes('Bahn, S.') ? 'text-khu-red font-black underline underline-offset-4 decoration-2' : ''}>{auth}</span>
-                          {j < arr.length - 1 ? ', ' : ''}
-                        </React.Fragment>
-                      ))}
-                    </p>
-                  </div>
+          <div className="space-y-32">
+            {[
+              { id: 'intl', title: "International Journals", data: intlJournals },
+              { id: 'dom', title: "Domestic Journals", data: domJournals },
+              { id: 'conf', title: "Conference Proceedings", data: [...intlConfs, ...domConfs].sort((a, b) => b.year - a.year) },
+              { id: 'books', title: "Books", data: books },
+            ].map((cat) => (
+              <div key={cat.id} className="space-y-12">
+                <div className="border-b-2 border-slate-900/5 pb-6">
+                  <h3 className="text-xs font-black text-khu-red uppercase tracking-widest mb-2">{cat.title}</h3>
+                  <p className="text-2xl font-black text-slate-900 uppercase">{cat.title.split(' ')[0]}</p>
                 </div>
-              ))}
-            </div>
-            <div className="flex justify-center pt-8">
-              <Link href="/publications" className="group inline-flex items-center gap-4 px-12 py-6 bg-slate-900 text-white rounded-full font-black text-[11px] uppercase tracking-[0.2em] hover:bg-khu-red transition-all shadow-2xl">
-                전체 연구 실적 보기 <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+                <div className="grid gap-6">
+                  {cat.data.slice(0, 5).map((paper: any, i) => (
+                    <div key={i} className="flex flex-col md:flex-row bg-white border border-slate-100 p-8 rounded-[2rem] hover:shadow-xl transition-all group">
+                      <div className="md:w-16 shrink-0 text-[10px] font-black text-slate-200 group-hover:text-khu-red transition-colors">#{paper.id}</div>
+                      <div className="flex-1 space-y-4">
+                        <div className="flex gap-3"><span className="px-3 py-1 bg-khu-red/5 text-khu-red text-[10px] font-black rounded-lg border border-khu-red/10">{paper.journal}</span><span className="text-[10px] font-black text-slate-400 bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">{paper.year}</span></div>
+                        <h4 className="text-xl font-black text-slate-900 group-hover:text-khu-red transition-colors leading-tight">{paper.title}</h4>
+                        <p className="text-[12px] font-bold text-slate-500">
+                          {paper.authors.split(', ').map((auth: string, j: number, arr: string[]) => (
+                            <React.Fragment key={j}>
+                              <span className={auth.includes('Bahn, S.') ? 'text-khu-red font-black underline underline-offset-4 decoration-2' : ''}>{auth}</span>
+                              {j < arr.length - 1 ? ', ' : ''}
+                            </React.Fragment>
+                          ))}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-center">
+                  <Link href="/publications" className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-khu-red transition-all">
+                    {cat.title} 전체보기 <ChevronRight size={14} />
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
